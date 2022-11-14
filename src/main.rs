@@ -18,7 +18,7 @@ fn ray_color(r: &Ray, world: &World, depth: u64) -> Color {
         // If we've exceeded the ray bounce limit, no more light is gathered
         return Color::new(0.0, 0.0, 0.0);
     }
-    if let Some(rec) = world.hit(r, 0.0, f64::INFINITY) {
+    if let Some(rec) = world.hit(r, 0.001, f64::INFINITY) {
         let target = rec.p + rec.normal + Vec3::random_in_unit_sphere();
         let r = Ray::new(rec.p, target - rec.p);
         0.5 * ray_color(&r, world, depth - 1)
@@ -34,7 +34,7 @@ fn main() {
     const ASPECT_RATIO: f64 = 16.0 / 9.0;
     const IMAGE_WIDTH: u64 = 256;
     const IMAGE_HEIGHT: u64 = ((IMAGE_WIDTH as f64) / ASPECT_RATIO) as u64;
-    const SAMPLES_PER_PIXEL: u64 = 100;
+    const SAMPLES_PER_PIXEL: u64 = 10;
     const MAX_DEPTH: u64 = 5;
 
     let mut world = World::new();
