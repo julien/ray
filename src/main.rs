@@ -10,7 +10,7 @@ use hit::{Hit, World};
 use material::{Dielectric, Lambertian, Metal};
 use ray::Ray;
 use sphere::Sphere;
-use vec::{Color, Point3, Vec3};
+use vec::{Color, Point3};
 
 use rand::Rng;
 use std::io::{stderr, Write};
@@ -46,16 +46,19 @@ fn main() {
     let mat_ground = Arc::new(Lambertian::new(Color::new(0.8, 0.8, 0.0)));
     let mat_center = Arc::new(Lambertian::new(Color::new(0.1, 0.2, 0.5)));
     let mat_left = Arc::new(Dielectric::new(1.5));
+    let mat_left_inner = Arc::new(Dielectric::new(1.5));
     let mat_right = Arc::new(Metal::new(Color::new(0.8, 0.6, 0.2), 1.0));
 
     let sphere_ground = Sphere::new(Point3::new(0.0, -100.5, -1.0), 100.0, mat_ground);
     let sphere_center = Sphere::new(Point3::new(0.0, 0.0, -1.0), 0.5, mat_center);
     let sphere_left = Sphere::new(Point3::new(-1.0, 0.0, -1.0), 0.5, mat_left);
+    let sphere_left_inner = Sphere::new(Point3::new(-1.0, 0.0, -1.0), -0.4, mat_left_inner);
     let sphere_right = Sphere::new(Point3::new(1.0, 0.0, -1.0), 0.5, mat_right);
 
     world.push(Box::new(sphere_ground));
     world.push(Box::new(sphere_center));
     world.push(Box::new(sphere_left));
+    world.push(Box::new(sphere_left_inner));
     world.push(Box::new(sphere_right));
 
     let cam = Camera::new();
